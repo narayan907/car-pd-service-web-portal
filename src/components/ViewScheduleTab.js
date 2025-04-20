@@ -44,25 +44,29 @@ const ViewScheduleTab = () => {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        View Pickups
-      </Typography>
-      <TextField
-        sx={{ width: '250px' }}
-        margin="normal"
-        label="Select Date"
-        type="date"
-        InputLabelProps={{ shrink: true }}
-        onChange={handleDateChange}
-        value={selectedDate}
-      />
-      <PickupListDisplay
-        recentPickups={pickups}
-        onRecentPickupsUpdate={updatePickups}
-        headerText="Pickups Schedule for this date"
-      />
-    </Box>
+    <div className="schedule-tab">
+      <Box sx={{ p: 2 }}>
+        <Typography variant="h6" gutterBottom>
+          View Pickups
+        </Typography>
+        <TextField
+          sx={{ width: '250px' }}
+          margin="normal"
+          label="Select Date"
+          type="date"
+          InputLabelProps={{ shrink: true }}
+          onChange={handleDateChange}
+          value={selectedDate}
+        />
+        <PickupListDisplay
+          recentPickups={pickups}
+          onRecentPickupsUpdate={updatePickups}
+          headerText="Pickups Schedule for this date"
+          canEdit={true}
+          canChangeStatus={true}
+        />
+      </Box>
+    </div>
   );
 };
 

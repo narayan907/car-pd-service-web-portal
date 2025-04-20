@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Container, Typography, Box, Tabs, Tab } from '@mui/material';
-import CreatePDServiceTab from './components/CreatePDServiceTab';
-import ViewScheduleTab from './components/ViewScheduleTab';
+
+// Use React.lazy to import both components
+const CreatePDServiceTab = React.lazy(() => import('./components/CreatePDServiceTab'));
+const ViewScheduleTab = React.lazy(() => import('./components/ViewScheduleTab'));
 
 function App() {
   const [tabIndex, setTabIndex] = useState(3);
@@ -185,8 +187,16 @@ function App() {
             </Box>
           </Box>
         )}
-        {tabIndex === 3 && <CreatePDServiceTab />}
-        {tabIndex === 4 && <ViewScheduleTab />}
+        {tabIndex === 3 && (
+          <Suspense fallback={<div>Loading Create Pickup...</div>}>
+            <CreatePDServiceTab />
+          </Suspense>
+        )}
+        {tabIndex === 4 && (
+          <Suspense fallback={<div>Loading View Pickups...</div>}>
+            <ViewScheduleTab />
+          </Suspense>
+        )}
       </Box>
     </Container>
   );

@@ -53,4 +53,32 @@ export const fetchPickupsByDate = async (date) => {
     console.error('Error fetching pickups:', error);
     throw error;
   }
+};
+
+export const updateServiceStatus = async (serviceRequestId, driverId, status) => {
+  try {
+    const response = await axios.put(`http://localhost:8080/api/admin/update-service-status`, {
+      serviceRequestId,
+      driverId,
+      status
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating service status:', error);
+    throw error;
+  }
+};
+
+export const fetchDrivers = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/drivers`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching drivers:', error);
+    throw error;
+  }
 }; 

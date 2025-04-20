@@ -39,11 +39,17 @@ const CreatePDServiceTab = ({ preFilledData = {} }) => { // Updated component na
   }, []); // Ensure this runs on page load
 
   useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      ...preFilledData
-    }));
-  }, [preFilledData]);
+    // Check if preFilledData is actually different before updating state
+    setFormData((prevData) => {
+      if (JSON.stringify(prevData) !== JSON.stringify({ ...prevData, ...preFilledData })) {
+        return {
+          ...prevData,
+          ...preFilledData
+        };
+      }
+      return prevData;
+    });
+  }, [preFilledData]); // Ensure this only runs when preFilledData changes
 
   const updateRecentPickups = async () => {
     const newPickups = await fetchRecentPickups();  // API call
@@ -51,7 +57,7 @@ const CreatePDServiceTab = ({ preFilledData = {} }) => { // Updated component na
   };
 
   return (
-    <div>
+    <div className="create-service-tab">
       <Button onClick={() => setOpenDialog(true)} color="primary">
         Create New Pickup
       </Button>
@@ -59,6 +65,7 @@ const CreatePDServiceTab = ({ preFilledData = {} }) => { // Updated component na
         recentPickups={recentPickups}
         onRecentPickupsUpdate={updateRecentPickups}
         headerText="Today's Created Pickups"
+        canEdit={true}
       />
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} fullWidth maxWidth="md">
         <DialogTitle>Create Pickup</DialogTitle>

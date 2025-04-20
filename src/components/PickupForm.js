@@ -88,7 +88,7 @@ const PDServiceForm = ({ formData, setFormData, setOpenDialog, setResponseJson, 
   };
 
   return (
-    <>
+    <div className="pickup-form">
       <form onSubmit={handleSubmit}>
         <TextField
           fullWidth
@@ -241,7 +241,7 @@ const PDServiceForm = ({ formData, setFormData, setOpenDialog, setResponseJson, 
           </Typography>
         </Box>
       )}
-    </>
+    </div>
   );
 };
 

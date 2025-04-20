@@ -1,0 +1,23 @@
+.edit-button, .status-change-button {
+    background-color: #4a90e2; /* Subtle blue background */
+    color: #ffffff; /* White text */
+    padding: 8px 16px; /* Adjusted padding for better fit */
+    margin: 4px; /* Smaller margin for compactness */
+    border: none; /* No border */
+    border-radius: 4px; /* Slightly rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 14px; /* Professional font size */
+    font-weight: 500; /* Medium font weight */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.edit-button:hover, .status-change-button:hover {
+    background-color: #357ab8; /* Darker blue on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.edit-button:focus, .status-change-button:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5); /* Focus ring for accessibility */
+} 
