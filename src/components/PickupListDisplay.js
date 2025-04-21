@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Dialog, DialogTitle, DialogContent, Button, Grid } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Dialog, DialogTitle, DialogContent, Button, Grid, Card, CardContent } from '@mui/material';
 import PDServiceForm from './PickupForm';
 import { fetchDrivers, updateServiceStatus } from '../utils/apiService';
 import PickupTableRow from './PickupTableRow';
@@ -114,42 +114,23 @@ const PickupListDisplay = ({ recentPickups = [], onRecentPickupsUpdate, headerTe
       <Typography variant="h6" gutterBottom>
         {headerText} - {recentPickups?.length || 0} items
       </Typography>
-      <TableContainer component={Paper} sx={{ maxHeight: 600 }}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              {['ID', 'Service Type', 'Customer Details', 'Vehicle Details', 'Pickup Time', 'Service Location', 'Created At', 'Last Updated At'].map((header) => (
-                <TableCell key={header} align="center" sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5' }}>
-                  {header}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {recentPickups?.length > 0 ? (
-              recentPickups.map((pickup, index) => (
-                <PickupTableRow
-                  key={pickup.id}
-                  pickup={pickup}
-                  index={index}
-                  canEdit={canEdit}
-                  canChangeStatus={canChangeStatus}
-                  handleEdit={handleEdit}
-                  handleChangeStatus={handleChangeStatus}
-                />
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={10} align="center">
-                  <Typography variant="body1" color="textSecondary">
-                    No pickups available.
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {recentPickups?.length > 0 ? (
+        recentPickups.map((pickup, index) => (
+          <PickupTableRow
+            key={pickup.id}
+            pickup={pickup}
+            index={index}
+            canEdit={canEdit}
+            canChangeStatus={canChangeStatus}
+            handleEdit={handleEdit}
+            handleChangeStatus={handleChangeStatus}
+          />
+        ))
+      ) : (
+        <Typography variant="body1" color="textSecondary" align="center">
+          No pickups available.
+        </Typography>
+      )}
       <Dialog open={openEditDialog} onClose={handleClose}>
         <DialogTitle>Edit Pickup</DialogTitle>
         <DialogContent>
@@ -186,6 +167,7 @@ const PickupListDisplay = ({ recentPickups = [], onRecentPickupsUpdate, headerTe
                 <option value="DRIVER_ASSIGNED">DRIVER_ASSIGNED</option>
                 <option value="DRIVER_PICKUP_DONE">DRIVER_PICKUP_DONE</option>
                 <option value="DRIVER_DROP_DONE">DRIVER_DROP_DONE</option>
+                <option value="COMPLETED">COMPLETED</option>
               </select>
             </Grid>
             <Grid item xs={6}>
