@@ -2,6 +2,9 @@ import React from 'react';
 import { Card, CardContent, Typography, Button, Box } from '@mui/material';
 
 const PickupTableRow = ({ pickup, index, canEdit, canChangeStatus, handleEdit, handleChangeStatus }) => {
+  // Access user roles directly from local storage
+  const userRoles = JSON.parse(localStorage.getItem('roles')) || [];
+
   // Define the service centre address
   const serviceCentre = "service centre";
 
@@ -22,6 +25,9 @@ const PickupTableRow = ({ pickup, index, canEdit, canChangeStatus, handleEdit, h
         return '#ffeb3b'; // Yellow for all remaining
     }
   };
+
+  // Determine if the edit button should be disabled
+  const isEditDisabled = userRoles.includes('ROLE_SC_OPS') && pickup.status !== 'PENDING';
 
   return (
     <Card
@@ -78,11 +84,12 @@ const PickupTableRow = ({ pickup, index, canEdit, canChangeStatus, handleEdit, h
               size="small"
               onClick={(e) => { e.stopPropagation(); handleEdit(pickup); }}
               sx={{ marginRight: 2 }}
+              disabled={isEditDisabled}
             >
               Edit
             </Button>
           )}
-          {canChangeStatus && (
+          {canChangeStatus && userRoles.includes('ROLE_ADMIN') && ( // Check if user has ROLE_ADMIN
             <Button
               variant="contained"
               color="secondary"

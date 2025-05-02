@@ -1,5 +1,6 @@
-import React, { useState, Suspense } from 'react';
-import { Container, Typography, Box, Tabs, Tab } from '@mui/material';
+import React, { useState, useEffect, Suspense } from 'react';
+import { Container, Typography, Box, Tabs, Tab, Button } from '@mui/material';
+import LoginPage from './components/LoginPage';
 
 // Use React.lazy to import both components
 const CreatePDServiceTab = React.lazy(() => import('./components/CreatePDServiceTab'));
@@ -7,51 +8,110 @@ const ViewScheduleTab = React.lazy(() => import('./components/ViewScheduleTab'))
 
 function App() {
   const [tabIndex, setTabIndex] = useState(3);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState('');
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    const storedRoles = JSON.parse(localStorage.getItem('roles'));
+    const storedUsername = localStorage.getItem('username'); // Retrieve the username
+
+    if (jwt) {
+      setIsAuthenticated(true);
+      setRoles(storedRoles || []);
+      setUsername(storedUsername || '');
+    }
+  }, []);
 
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };
 
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+    setRoles(JSON.parse(localStorage.getItem('roles')) || []);
+    setUsername(localStorage.getItem('username') || '');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('roles');
+    localStorage.removeItem('username');
+    setIsAuthenticated(false);
+  };
+
+  if (!isAuthenticated) {
+    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+  }
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ 
-        bgcolor: '#1a237e', // Deep blue background
-        py: 3, // Reduced padding
+        bgcolor: '#1a237e',
+        py: 3,
         px: 4,
         borderRadius: '0 0 16px 16px',
         boxShadow: 3,
         mb: 3,
-        background: 'linear-gradient(to right, #1a237e, #283593)', // Subtle gradient
+        background: 'linear-gradient(to right, #1a237e, #283593)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
-        <Typography 
-          variant="h4"  // Reduced from h3 to h4
-          component="h1" 
-          gutterBottom 
-          align="left"
-          sx={{ 
-            color: 'white',
-            fontWeight: 500, // Reduced font weight
-            fontFamily: '"Poppins", sans-serif', // More modern font
-            letterSpacing: '0.5px',
-            mb: 1
-          }}
-        >
-          Yasashvi Car Pickup Service
-        </Typography>
-        <Typography 
-          variant="subtitle1" // Changed from h5
-          component="h2" 
-          align="left"
-          sx={{ 
-            color: '#e3f2fd',
-            fontWeight: 300,
-            fontFamily: '"Poppins", sans-serif',
-            letterSpacing: '0.5px',
-            opacity: 0.9
-          }}
-        >
-          Schedule your car pickup with ease
-        </Typography>
+        <div>
+          <Typography 
+            variant="h4"
+            component="h1"
+            gutterBottom
+            align="left"
+            sx={{ 
+              color: 'white',
+              fontWeight: 500,
+              fontFamily: '"Poppins", sans-serif',
+              letterSpacing: '0.5px',
+              mb: 1
+            }}
+          >
+            Yasashvi Car Pickup Service
+          </Typography>
+          <Typography 
+            variant="subtitle1"
+            component="h2"
+            align="left"
+            sx={{ 
+              color: '#e3f2fd',
+              fontWeight: 300,
+              fontFamily: '"Poppins", sans-serif',
+              letterSpacing: '0.5px',
+              opacity: 0.9
+            }}
+          >
+            Schedule your car pickup with ease
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="body1" sx={{ color: 'white', mr: 2 }}>
+            {username} ({roles.join(', ')})
+          </Typography>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleLogout}
+            sx={{
+              textTransform: 'none',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+              transition: 'background-color 0.3s ease',
+              '&:hover': {
+                backgroundColor: '#d32f2f',
+              },
+            }}
+          >
+            Logout
+          </Button>
+        </div>
       </Box>
 
       <Box sx={{ 
