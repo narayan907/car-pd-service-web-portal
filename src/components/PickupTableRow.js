@@ -66,6 +66,11 @@ const PickupTableRow = ({ pickup, index, canEdit, canChangeStatus, handleEdit, h
             {pickup.driver ? `ID: ${pickup.driver.id}, Name: ${pickup.driver.name}` : 'N/A'}
           </Typography>
           <br />
+          <Typography variant="body2" sx={{ fontWeight: 'bold', display: 'inline', marginRight: 1 }}>Created By:</Typography>
+          <Typography variant="body2" sx={{ display: 'inline', marginBottom: 3 }}>
+            {pickup.createdByName || 'N/A'}
+          </Typography>
+          <br />
           <Typography variant="body2" sx={{ fontWeight: 'bold', display: 'inline', marginRight: 1 }}>Created At:</Typography>
           <Typography variant="body2" color="textSecondary" sx={{ display: 'inline', marginBottom: 3 }}>
             {new Date(pickup.createdAt).toLocaleString()} | <strong>Last Updated At:</strong> {new Date(pickup.lastUpdatedAt).toLocaleString()}

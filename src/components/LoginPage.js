@@ -5,14 +5,22 @@ import { login } from '../utils/apiService'; // Import the login function
 const LoginPage = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [empname, setEmpname] = useState(''); // New state for employee name
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
+    // Validate employee name
+    if (empname.length === 0 || empname.length > 15) {
+      setError('Employee name must be between 1 and 15 characters');
+      return;
+    }
+
     try {
       const { jwt, roles } = await login(username, password); // Use the login function
       localStorage.setItem('jwt', jwt);
       localStorage.setItem('roles', JSON.stringify(roles));
       localStorage.setItem('username', username); // Store the username
+      localStorage.setItem('empname', empname); // Store the employee name
       onLoginSuccess();
     } catch (err) {
       setError('Invalid username or password');
@@ -36,6 +44,15 @@ const LoginPage = ({ onLoginSuccess }) => {
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+      />
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Enter Employee Name" // Label for the new field
+        value={empname}
+        onChange={(e) => setEmpname(e.target.value)}
+        error={empname.length > 15 || empname.length === 0}
+        helperText={empname.length > 15 || empname.length === 0 ? 'Must be 1-15 characters' : ''}
       />
       {error && <Typography color="error">{error}</Typography>}
       <Button variant="contained" color="primary" onClick={handleLogin} sx={{ mt: 2 }}>

@@ -7,9 +7,11 @@ const API_BASE_URL = `${HOSTNAME}/api/services`;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('jwt');
+  const empname = localStorage.getItem('empname');
   return {
     headers: {
       'Authorization': `Bearer ${token}`,
+      'empname': empname
     },
   };
 };

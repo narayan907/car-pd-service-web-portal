@@ -11,16 +11,19 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [roles, setRoles] = useState([]);
+  const [empname, setEmpname] = useState('');
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     const storedRoles = JSON.parse(localStorage.getItem('roles'));
-    const storedUsername = localStorage.getItem('username'); // Retrieve the username
+    const storedUsername = localStorage.getItem('username');
+    const storedEmpname = localStorage.getItem('empname');
 
     if (jwt) {
       setIsAuthenticated(true);
       setRoles(storedRoles || []);
       setUsername(storedUsername || '');
+      setEmpname(storedEmpname || '');
     }
   }, []);
 
@@ -32,12 +35,14 @@ function App() {
     setIsAuthenticated(true);
     setRoles(JSON.parse(localStorage.getItem('roles')) || []);
     setUsername(localStorage.getItem('username') || '');
+    setEmpname(localStorage.getItem('empname') || '');
   };
 
   const handleLogout = () => {
     localStorage.removeItem('jwt');
     localStorage.removeItem('roles');
     localStorage.removeItem('username');
+    localStorage.removeItem('empname');
     setIsAuthenticated(false);
   };
 
@@ -46,8 +51,9 @@ function App() {
   }
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth={false} sx={{ px: 0 }}>
       <Box sx={{ 
+        width: '100%',
         bgcolor: '#1a237e',
         py: 3,
         px: 4,
@@ -94,6 +100,9 @@ function App() {
           <Typography variant="body1" sx={{ color: 'white', mr: 2 }}>
             {username} ({roles.join(', ')})
           </Typography>
+          <Typography variant="body1" sx={{ color: 'white', mr: 2 }}>
+            Employee Name: {empname}
+          </Typography>
           <Button
             variant="contained"
             color="secondary"
@@ -115,6 +124,7 @@ function App() {
       </Box>
 
       <Box sx={{ 
+        width: '100%',
         borderRadius: '16px',
         overflow: 'hidden',
         boxShadow: 3,
@@ -153,6 +163,7 @@ function App() {
       </Box>
 
       <Box sx={{ 
+        width: '100%',
         bgcolor: 'white',
         borderRadius: '16px',
         boxShadow: 3,
