@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { Container, Typography, Box, Tabs, Tab, Button } from '@mui/material';
 import LoginPage from './components/LoginPage';
+import DriverDetailsTab from './components/DriverDetailsTab';
+import ManageDriversTab from './components/ManageDriversTab';
 
 // Use React.lazy to import both components
 const CreatePDServiceTab = React.lazy(() => import('./components/CreatePDServiceTab'));
@@ -79,7 +81,7 @@ function App() {
               mb: 1
             }}
           >
-            Yasashvi Car Pickup Service
+            Yasashvi Logistics
           </Typography>
           <Typography 
             variant="subtitle1"
@@ -105,16 +107,16 @@ function App() {
           </Typography>
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             onClick={handleLogout}
             sx={{
               textTransform: 'none',
               fontWeight: 'bold',
               borderRadius: '8px',
-              boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+              boxShadow: '0 2px 4px 1px rgba(0, 0, 0, .2)',
               transition: 'background-color 0.3s ease',
               '&:hover': {
-                backgroundColor: '#d32f2f',
+                backgroundColor: '#1976d2',
               },
             }}
           >
@@ -155,10 +157,11 @@ function App() {
           }}
         >
           <Tab label="About Us" />
-          <Tab label="Driver Details" />
           <Tab label="Guidelines" />
+          <Tab label="Driver Details" />
           <Tab label="Create Pickup" />
-          <Tab label="View Pickups" />
+          <Tab label="Manage Pickups" />
+          {roles.includes('ROLE_ADMIN') && <Tab label="Manage Drivers" />}
         </Tabs>
       </Box>
 
@@ -173,10 +176,10 @@ function App() {
         {tabIndex === 0 && (
           <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
             <Typography variant="h4" gutterBottom sx={{ color: '#1a237e', fontWeight: 600, mb: 4 }}>
-              About Yasashvi Car Pickup Service
+              About Yasashvi Logistics
             </Typography>
             <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-              Yasashvi Car Pickup Service is a premier automotive service provider specializing in Skoda vehicles. 
+              Yasashvi Logistics is a premier automotive service provider specializing in Skoda vehicles. 
               Established with a commitment to excellence, we offer convenient pickup and delivery services for 
               your vehicle maintenance needs.
             </Typography>
@@ -192,37 +195,6 @@ function App() {
           </Box>
         )}
         {tabIndex === 1 && (
-          <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
-            <Typography variant="h4" gutterBottom sx={{ color: '#1a237e', fontWeight: 600, mb: 4 }}>
-              Our Professional Drivers
-            </Typography>
-            <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', mb: 3 }}>
-              All our drivers are:
-            </Typography>
-            <Box sx={{ 
-              bgcolor: '#f5f5f5',
-              p: 3,
-              borderRadius: '8px',
-              mb: 4
-            }}>
-              <Typography variant="body1" component="ul" sx={{ fontSize: '1.1rem', lineHeight: 2 }}>
-                <li>Professionally licensed with minimum 5 years of experience</li>
-                <li>Background verified and certified</li>
-                <li>Trained in customer service excellence</li>
-                <li>Knowledgeable about various Skoda models</li>
-                <li>Available 24/7 for pickup services</li>
-              </Typography>
-            </Box>
-            <Typography variant="h5" sx={{ color: '#1a237e', fontWeight: 600, mb: 2 }}>
-              Safety Measures
-            </Typography>
-            <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-              We maintain strict safety protocols including regular vehicle sanitization, 
-              GPS tracking, and real-time service updates for your peace of mind.
-            </Typography>
-          </Box>
-        )}
-        {tabIndex === 2 && (
           <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
             <Typography variant="h4" gutterBottom sx={{ color: '#1a237e', fontWeight: 600, mb: 4 }}>
               Guidelines for Creating a Pickup
@@ -258,6 +230,9 @@ function App() {
             </Box>
           </Box>
         )}
+        {tabIndex === 2 && (
+          <DriverDetailsTab />
+        )}
         {tabIndex === 3 && (
           <Suspense fallback={<div>Loading Create Pickup...</div>}>
             <CreatePDServiceTab />
@@ -267,6 +242,9 @@ function App() {
           <Suspense fallback={<div>Loading View Pickups...</div>}>
             <ViewScheduleTab />
           </Suspense>
+        )}
+        {roles.includes('ROLE_ADMIN') && tabIndex === 5 && (
+          <ManageDriversTab />
         )}
       </Box>
     </Container>

@@ -4,6 +4,7 @@ import { Box, Typography, Dialog, DialogActions, DialogContent, DialogContentTex
 import PickupListDisplay from './PickupListDisplay';
 import PDServiceForm from './PickupForm'; // Ensure this import is correct
 import { fetchRecentPickups } from '../utils/apiService'; // Import the utility function
+import { styled } from '@mui/material/styles'; // Import styled from MUI
 
 const CreatePDServiceTab = ({ preFilledData = {} }) => { // Updated component name
   const [formData, setFormData] = useState({
@@ -56,11 +57,26 @@ const CreatePDServiceTab = ({ preFilledData = {} }) => { // Updated component na
     setRecentPickups(newPickups);  // Updates local state
   };
 
+  // Define a styled button
+  const StyledButton = styled(Button)({
+    backgroundColor: '#1976d2', // Primary color
+    color: '#fff', // White text
+    padding: '10px 20px', // Increase padding
+    fontSize: '16px', // Larger font size
+    fontWeight: 'bold', // Bold text
+    borderRadius: '8px', // Rounded corners
+    boxShadow: '0 3px 5px 2px rgba(25, 118, 210, .3)', // Add shadow
+    margin: '20px 0', // Add vertical spacing
+    '&:hover': {
+      backgroundColor: '#115293', // Darker shade on hover
+    },
+  });
+
   return (
     <div className="create-service-tab">
-      <Button onClick={() => setOpenDialog(true)} color="primary">
+      <StyledButton onClick={() => setOpenDialog(true)}>
         Create New Pickup
-      </Button>
+      </StyledButton>
       <PickupListDisplay
         recentPickups={recentPickups}
         onRecentPickupsUpdate={updateRecentPickups}

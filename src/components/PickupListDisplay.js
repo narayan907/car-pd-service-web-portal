@@ -43,7 +43,7 @@ const PickupListDisplay = ({ recentPickups = [], onRecentPickupsUpdate, headerTe
 
   // Define light background colors for each category
   const categoryColors = {
-    PENDING: '#FFFFFF', // White
+    PENDING: '#FFFFFF', // Light yellow
     CANCELLED: '#FFCDD2', // Light red
     INPROGRESS: '#BBDEFB', // Light blue
     COMPLETED: '#C8E6C9' // Light green

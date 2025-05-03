@@ -104,4 +104,33 @@ export const login = async (username, password) => {
     console.error('Error logging in:', error);
     throw error;
   }
+};
+
+export const createDriver = async (driverData) => {
+  try {
+    const response = await axios.post(`${HOSTNAME}/api/drivers`, driverData, getAuthHeaders());
+    return response.data;
+  } catch (error) {
+    console.error('Error creating driver:', error);
+    throw error;
+  }
+};
+
+export const updateDriver = async (driverId, driverData) => {
+  try {
+    const response = await axios.put(`${HOSTNAME}/api/drivers/${driverId}`, driverData, getAuthHeaders());
+    return response.data;
+  } catch (error) {
+    console.error('Error updating driver:', error);
+    throw error;
+  }
+};
+
+export const deleteDriver = async (driverId) => {
+  try {
+    await axios.delete(`${HOSTNAME}/api/drivers/${driverId}`, getAuthHeaders());
+  } catch (error) {
+    console.error('Error deleting driver:', error);
+    throw error;
+  }
 }; 
