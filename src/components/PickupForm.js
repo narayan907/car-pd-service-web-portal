@@ -27,9 +27,9 @@ const PDServiceForm = ({ formData, setFormData, setOpenDialog, setResponseJson, 
     }
 
     // Vehicle Number Validation
-    const vehicleNumberRegex = /^[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{4}$/;
-    if (!formData.vehicleNumber || !vehicleNumberRegex.test(formData.vehicleNumber.toUpperCase())) {
-      newErrors.vehicleNumber = 'Enter a valid Indian vehicle number.';
+    const vehicleNumberRegex = /^[^\s]{5,16}$/;
+    if (!formData.vehicleNumber || !vehicleNumberRegex.test(formData.vehicleNumber)) {
+      newErrors.vehicleNumber = 'Enter a valid vehicle number with 5 to 16 characters and no spaces.';
     }
 
     // Vehicle Model Validation
@@ -40,6 +40,21 @@ const PDServiceForm = ({ formData, setFormData, setOpenDialog, setResponseJson, 
     // Service Location Validation
     if (!formData.serviceLocation || formData.serviceLocation.length < 15 || formData.serviceLocation.length > 300) {
       newErrors.serviceLocation = 'Service location must be between 15 and 300 characters.';
+    }
+
+    // Pickup Time Validation
+    if (!formData.pickupTime) {
+      newErrors.pickupTime = 'Pickup time is required.';
+    } else {
+      const selectedTime = new Date(formData.pickupTime);
+      const currentTime = new Date();
+
+      // Convert current time to IST
+      const currentTimeIST = new Date(currentTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+
+      if (selectedTime <= currentTimeIST) {
+        newErrors.pickupTime = 'Pickup time must be in the future.';
+      }
     }
 
     setErrors(newErrors);
@@ -184,10 +199,11 @@ const PDServiceForm = ({ formData, setFormData, setOpenDialog, setResponseJson, 
           name="pickupTime"
           label="Pickup Time *"
           type="datetime-local"
-          value={formData.pickupTime}
+          value={formData.pickupTime || ''}
           onChange={handleChange}
           InputLabelProps={{ shrink: true }}
-          helperText="Select a date and time"
+          error={!!errors.pickupTime}
+          helperText={errors.pickupTime || "Select a date and time"}
         />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
           {formData.id && (

@@ -7,7 +7,7 @@ import { fetchRecentPickups } from '../utils/apiService'; // Import the utility 
 import { styled } from '@mui/material/styles'; // Import styled from MUI
 
 const CreatePDServiceTab = ({ preFilledData = {} }) => { // Updated component name
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     customerName: '',
     customerPhoneNumber: '',
     customerEmail: '',
@@ -19,7 +19,9 @@ const CreatePDServiceTab = ({ preFilledData = {} }) => { // Updated component na
     createdBy: 'narayan', // Default value for createdBy
     serviceType: 'PICKUP_FROM_CUSTOMER_LOCATION', // Default value
     ...preFilledData // Merge pre-filled data if available
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const [openDialog, setOpenDialog] = useState(false); // Initially set to false
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
@@ -74,7 +76,10 @@ const CreatePDServiceTab = ({ preFilledData = {} }) => { // Updated component na
 
   return (
     <div className="create-service-tab">
-      <StyledButton onClick={() => setOpenDialog(true)}>
+      <StyledButton onClick={() => {
+        setFormData(initialFormData); // Reset form data
+        setOpenDialog(true);
+      }}>
         Create New Pickup
       </StyledButton>
       <PickupListDisplay
