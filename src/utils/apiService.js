@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/api/services';
+// const HOSTNAME = 'http://ec2-13-232-228-251.ap-south-1.compute.amazonaws.com:8080';
+const HOSTNAME = 'http://localhost:8080';
+
+const API_BASE_URL = `${HOSTNAME}/api/services`;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('jwt');
@@ -62,7 +65,7 @@ export const fetchPickupsByDate = async (date) => {
 
 export const updateServiceStatus = async (serviceRequestId, driverId, status) => {
   try {
-    const response = await axios.put(`http://localhost:8080/api/admin/update-service-status`, {
+    const response = await axios.put(`${HOSTNAME}/api/admin/update-service-status`, {
       serviceRequestId,
       driverId,
       status
@@ -76,10 +79,27 @@ export const updateServiceStatus = async (serviceRequestId, driverId, status) =>
 
 export const fetchDrivers = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/drivers`, getAuthHeaders());
+    const response = await axios.get(`${HOSTNAME}/api/drivers`, getAuthHeaders());
     return response.data;
   } catch (error) {
-    console.error('Error fetching drivers:', error);
+    console.error('Error f etching drive rs:', error);
+    throw error;
+  }
+};
+
+export const login = async (username, password) => {
+  try {
+    const response = await axios.post(`${HOSTNAME}/api/auth/login`, {
+      username,
+      password,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error logging in:', error);
     throw error;
   }
 }; 

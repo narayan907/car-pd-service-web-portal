@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import axios from 'axios';
+import { login } from '../utils/apiService'; // Import the login function
 
 const LoginPage = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
@@ -9,16 +9,7 @@ const LoginPage = ({ onLoginSuccess }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
-        username,
-        password,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const { jwt, roles } = response.data;
+      const { jwt, roles } = await login(username, password); // Use the login function
       localStorage.setItem('jwt', jwt);
       localStorage.setItem('roles', JSON.stringify(roles));
       localStorage.setItem('username', username); // Store the username
