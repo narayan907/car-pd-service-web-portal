@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // const HOSTNAME = 'http://ec2-13-232-228-251.ap-south-1.compute.amazonaws.com:8080';
-const HOSTNAME = 'http://localhost:8080';
+// const HOSTNAME = 'http://localhost:8080';
+const HOSTNAME = 'https://api.carmovezo.com';
 
 const API_BASE_URL = `${HOSTNAME}/api/services`;
 

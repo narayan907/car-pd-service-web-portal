@@ -38,8 +38,8 @@ const PDServiceForm = ({ formData, setFormData, setOpenDialog, setResponseJson, 
     }
 
     // Service Location Validation
-    if (!formData.serviceLocation || formData.serviceLocation.length < 15 || formData.serviceLocation.length > 300) {
-      newErrors.serviceLocation = 'Service location must be between 15 and 300 characters.';
+    if (!formData.serviceLocation || formData.serviceLocation.length < 5 || formData.serviceLocation.length > 300) {
+      newErrors.serviceLocation = 'Service location must be between 5 and 300 characters.';
     }
 
     // Pickup Time Validation
